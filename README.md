@@ -22,52 +22,59 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+# 👉 Note: Dababase 
+
+## MySQL 
+
+### Commands in common
+```bash
+$ mysql.server start
+$ mysql -u root -p
+
+mysql> SHOW DATABASES;
+mysql> SHOW GLOBAL VARIABLES LIKE 'PORT';
+
+mysql> CREATE DATABASE `korean_learner`;
+mysql> use `kroean_learner`;
+mysql> DESC koPos;
+```
+
+### Tables
+```sql
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `username` varchar(50) NOT NULL,
+  `hash` BINARY(32) NOT NULL,
+  PRIMARY KEY(`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `koPos` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `pos` nvarchar(400) NOT NULL,
+  PRIMARY KEY(`id`)
+);
+```
+
 ## Description
-
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
 ## Installation
-
 ```bash
 $ npm install
 ```
-
 ## Running the app
-
 ```bash
 # development
 $ npm run start
-
 # watch mode
 $ npm run start:dev
-
 # production mode
 $ npm run start:prod
 ```
-
 ## Test
-
 ```bash
 # unit tests
 $ npm run test
-
 # e2e tests
 $ npm run test:e2e
-
 # test coverage
 $ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
