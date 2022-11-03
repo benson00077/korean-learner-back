@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import configuration from './config/configuration';
@@ -19,23 +19,30 @@ import { User } from './users/user.entitiy';
           .valid('development', 'production', 'test')
           .default('development'),
         PORT: Joi.number().default(3000),
-        DATABASE_HOST: Joi.string().required(),
-        DATABASE_PORT: Joi.number().required(),
+        DB_HOST: Joi.string().required(),
+        DB_PORT: Joi.number().required(),
+        DB_USERNAME: Joi.string().required(),
+        DB_PASSWORD: Joi.string().allow(''),
+        DB_DATABASE: Joi.string().required(),
       }),
       validationOptions: {
         allowUnknown: true, // nvm have env var like NVM_INC
         abortEarly: true, // stops validation on the first error 
       }
     }),
-    TypeOrmModule.forRoot({
-      type: 'mysql', 
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'korean_learner',
-      entities: [User],
-      synchronize: true, // shouldn't be used in production - otherwise you can lose production data.
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql', 
+        host:  configService.get('DB_HOST'),
+        port: +configService.get('DB_PORT'),
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_DATABASE'),
+        entities: [User],
+        synchronize: true, // shouldn't be used in production - otherwise you can lose production data.
+      }),
+      inject:[ConfigService]
     }),
     UsersModule,
     ConfigModule
