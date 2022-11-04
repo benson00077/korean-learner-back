@@ -18,6 +18,7 @@
   - [5.1. MySQL Notes](#51-mysql-notes)
     - [5.1.1. Commands in common](#511-commands-in-common)
     - [5.1.2. Tables](#512-tables)
+    - [5.1.3. Entity Relationship Diagrams](#513-entity-relationship-diagrams)
 </details>
 
 <!-- ABOUT THE PROJECT -->
@@ -74,6 +75,7 @@ $ npm run test:cov
 - [ ] User module
   - [ ] Contorller unit test
   - [ ] Hash password
+  - [ ] Auth strategy
 - [ ] Sentence module
 
 <p align="right">(<a href="#user-content-readme-top">back to top</a>)</p>
@@ -112,6 +114,38 @@ CREATE TABLE IF NOT EXISTS `koPos` (
   `pos` nvarchar(400) NOT NULL,
   PRIMARY KEY(`id`)
 );
+```
+
+### 5.1.3. Entity Relationship Diagrams
+```mermaid
+erDiagram
+    USERS }|--|{ SENTENCES: collect
+    SENTENCES ||--|| SENTENCES_KO: contains
+    SENTENCES |o--o| SENTENCES_ZH: contains
+    SENTENCES |o--o| SENTENCES_EN: contains
+
+    USERS {
+        int id
+        string email
+        intArr sentences_id
+    }
+    SENTENCES {
+        intArr users_id
+        int time_stamps_id
+    }
+    SENTENCES_KO {
+        int time_stamps_id
+        string pos
+        string subtitles
+    }
+    SENTENCES_ZH {
+        int time_stamps_id
+        string subtitles
+    }
+    SENTENCES_EN {
+        int time_stamps_id
+        string subtitles
+    }
 ```
 
 <p align="right">(<a href="#user-content-readme-top">back to top</a>)</p>
