@@ -1,13 +1,23 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  UseFilters,
+} from '@nestjs/common';
+import { TypeormFilter } from 'src/common/exceptions/typeorm/typeorm.filter';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entitiy';
 import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService:UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @UseFilters(TypeormFilter)
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create(createUserDto);
   }

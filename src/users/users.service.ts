@@ -13,10 +13,10 @@ export class UsersService {
 
   create(createUserDto: CreateUserDto): Promise<User> {
     const user = new User();
-    user.username = createUserDto.username;
+    user.email = createUserDto.email;
     user.hash = createUserDto.hash;
 
-    console.log('User created...')
+    console.log('User created...');
 
     return this.userRepository.save(user);
   }

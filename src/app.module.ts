@@ -27,14 +27,14 @@ import { User } from './users/user.entitiy';
       }),
       validationOptions: {
         allowUnknown: true, // nvm have env var like NVM_INC
-        abortEarly: true, // stops validation on the first error 
-      }
+        abortEarly: true, // stops validation on the first error
+      },
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        type: 'mysql', 
-        host:  configService.get('DB_HOST'),
+        type: 'mysql',
+        host: configService.get('DB_HOST'),
         port: +configService.get('DB_PORT'),
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
@@ -42,10 +42,10 @@ import { User } from './users/user.entitiy';
         entities: [User],
         synchronize: true, // shouldn't be used in production - otherwise you can lose production data.
       }),
-      inject:[ConfigService]
+      inject: [ConfigService],
     }),
     UsersModule,
-    ConfigModule
+    ConfigModule,
   ],
   controllers: [AppController],
   providers: [AppService],

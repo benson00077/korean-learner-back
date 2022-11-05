@@ -73,8 +73,9 @@ $ npm run test:cov
   - [x] init with config module / env
   - [ ] Refactor outsdie app module: [ref](https://docs.nestjs.com/techniques/database#async-configuration)
 - [ ] User module
-  - [ ] Contorller unit test
+  - [ ] Controller unit test
   - [ ] Hash password
+  - [ ] No duplicate user / email
   - [ ] Auth strategy
 - [ ] Sentence module
 
