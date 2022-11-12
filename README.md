@@ -67,6 +67,10 @@ $ npm run test:cov
 
 # 4. 👉 Roadmap
 
+v0.1.0 Prototype built w/ Python(Flask),see [kosub_api_heroku](https://github.com/benson00077/kosub_api_heroku)
+
+v0.2.0 Built w/ Nest.js
+
 - [ ] Config
   - [ ] Refactor outside app module: [ref](https://stackoverflow.com/questions/69844941/can-i-use-nestjs-config-service-outside-a-module)
 - [ ] ORM module
@@ -75,10 +79,11 @@ $ npm run test:cov
 - [ ] User module
   - [ ] Controller unit test
   - [ ] Hash password
-  - [ ] No duplicate user / email
+  - [x] No duplicate user / email
   - [ ] Auth strategy
 - [ ] Sentence module
-  - [ ] Bulk insert from json file (via typeORM QueryBuilder)
+  - [x] Bulk insert from json file (via typeORM QueryBuilder)
+  - [ ] Support Full Text Search w/ srategies
 
 <p align="right">(<a href="#user-content-readme-top">back to top</a>)</p>
 
@@ -103,6 +108,7 @@ mysql> DESC koPos;
 ### 5.1.2. Tables
 
 ```sql
+-- NOT in use , since we use typeORM
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `username` varchar(50) NOT NULL,
@@ -110,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `isActive` BOOLEAN,
   PRIMARY KEY(`id`)
 );
-
+-- NOT in use , since we use typeORM
 CREATE TABLE IF NOT EXISTS `koPos` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `pos` nvarchar(400) NOT NULL,
