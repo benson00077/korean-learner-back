@@ -8,7 +8,9 @@ import { TypeormFilter } from 'src/common/exceptions/typeorm/typeorm.filter';
 export class SentenceKoController {
   constructor(private readonly sentenceKoService: SentenceKoService) {}
 
-  private parseJson2InsertDto(datas: typeof mockSentenceKo): InsertSentenceKoDto[] {
+  private parseJson2InsertDto(
+    datas: typeof mockSentenceKo,
+  ): InsertSentenceKoDto[] {
     const parsed = datas.map((data) => {
       return {
         timeId: +`${data.chunckId}${data.startTime.replace(/\D/g, '')}`,
@@ -22,9 +24,9 @@ export class SentenceKoController {
   @Post('/insert?')
   @UseFilters(TypeormFilter)
   insert(@Query('source') source: string) {
-    if(source !== 'local') return 'Invalid parameters'
+    if (source !== 'local') return 'Invalid parameters';
     const parsed = this.parseJson2InsertDto(mockSentenceKo);
-    return this.sentenceKoService.insert(parsed)
+    return this.sentenceKoService.insert(parsed);
   }
 
   @Get()

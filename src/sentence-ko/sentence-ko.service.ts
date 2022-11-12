@@ -11,26 +11,25 @@ export class SentenceKoService {
     private sentenceKoRepository: Repository<SentenceKo>,
   ) {}
 
-
-	insert(datas: InsertSentenceKoDto[]): Promise<InsertResult> {
+  insert(datas: InsertSentenceKoDto[]): Promise<InsertResult> {
     const sentencesKo: SentenceKo[] = [];
-    datas.forEach(data => {
+    datas.forEach((data) => {
       sentencesKo.push({
         timeId: data.timeId,
         sentences: data.sentence,
         pos: data.pos,
-      })
-    })
+      });
+    });
 
-    console.log('Inserting setence in Korean...')
+    console.log('Inserting setence in Korean...');
 
     const inserted = this.sentenceKoRepository
       .createQueryBuilder()
       .insert()
       .into(SentenceKo)
       .values(sentencesKo)
-      .execute()
+      .execute();
 
-    return inserted
-	}
+    return inserted;
+  }
 }
