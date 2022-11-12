@@ -7,6 +7,8 @@ import * as Joi from 'joi';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { User } from './users/user.entitiy';
+import { SentenceKoModule } from './sentence-ko/sentence-ko.module';
+import { SentenceKo } from './sentence-ko/sentenceKo.entity';
 
 @Module({
   imports: [
@@ -39,13 +41,14 @@ import { User } from './users/user.entitiy';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        entities: [User],
+        entities: [User, SentenceKo],
         synchronize: true, // shouldn't be used in production - otherwise you can lose production data.
       }),
       inject: [ConfigService],
     }),
     UsersModule,
     ConfigModule,
+    SentenceKoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

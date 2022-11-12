@@ -78,6 +78,7 @@ $ npm run test:cov
   - [ ] No duplicate user / email
   - [ ] Auth strategy
 - [ ] Sentence module
+  - [ ] Bulk insert from json file (via typeORM QueryBuilder)
 
 <p align="right">(<a href="#user-content-readme-top">back to top</a>)</p>
 
@@ -137,15 +138,15 @@ erDiagram
     SENTENCES_KO {
         int time_stamps_id
         string pos
-        string subtitles
+        string sentences
     }
     SENTENCES_ZH {
         int time_stamps_id
-        string subtitles
+        string sentences
     }
     SENTENCES_EN {
         int time_stamps_id
-        string subtitles
+        string sentences
     }
 ```
 
