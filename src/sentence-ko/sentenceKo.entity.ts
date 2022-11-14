@@ -9,6 +9,7 @@ export class SentenceKo {
   @Column()
   pos: string;
 
+  @Index({ fulltext: true, parser: 'ngram'})
   @Column()
   sentences: string;
 }

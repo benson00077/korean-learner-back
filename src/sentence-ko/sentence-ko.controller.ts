@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Query, UseFilters } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseFilters } from '@nestjs/common';
 import { InsertSentenceKoDto } from './dto/insert-sentence-ko.dto';
 import { SentenceKoService } from './sentence-ko.service';
 import * as mockSentenceKo from './mockSentenceKoData.json';
 import { TypeormFilter } from 'src/common/exceptions/typeorm/typeorm.filter';
+import { SearchSentenceKoDto } from './dto/search-sentence-ko.dto';
 
 @Controller('sentence-ko')
 export class SentenceKoController {
@@ -27,6 +28,12 @@ export class SentenceKoController {
     if (source !== 'local') return 'Invalid parameters';
     const parsed = this.parseJson2InsertDto(mockSentenceKo);
     return this.sentenceKoService.insert(parsed);
+  }
+
+  @Get('/search')
+  @UseFilters(TypeormFilter)
+  searchByPosTag(@Body() datas: SearchSentenceKoDto) {
+    return this.sentenceKoService.searchByPosTag(datas)
   }
 
   @Get()
