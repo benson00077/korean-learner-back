@@ -84,6 +84,9 @@ v0.2.0 Built w/ Nest.js
 - [ ] Sentence module
   - [x] Bulk insert from json file (via typeORM QueryBuilder)
   - [ ] Support Full Text Search w/ srategies
+- [ ] Shows module
+  - [ ] recored show name, and episode
+  - [ ] Mapping the time_stamps_id for each subtitles, which should also include show name and episode
 
 <p align="right">(<a href="#user-content-readme-top">back to top</a>)</p>
 
@@ -102,7 +105,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'PORT';
 
 mysql> CREATE DATABASE `korean_learner`;
 mysql> use `kroean_learner`;
-mysql> DESC koPos;
+mysql> DESC sentenceKo;
 ```
 
 ### 5.1.2. Tables
@@ -131,6 +134,7 @@ erDiagram
     SENTENCES ||--|| SENTENCES_KO: contains
     SENTENCES |o--o| SENTENCES_ZH: contains
     SENTENCES |o--o| SENTENCES_EN: contains
+    USERS }|--|{ SHOWS: collect
 
     USERS {
         int id
@@ -153,6 +157,12 @@ erDiagram
     SENTENCES_EN {
         int time_stamps_id
         string sentences
+    }
+    SHOWS {
+        intArr users_id
+        int id
+        string name
+        int episode
     }
 ```
 
