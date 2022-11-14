@@ -43,6 +43,7 @@ import { SentenceKo } from './sentence-ko/sentenceKo.entity';
         database: configService.get('DB_DATABASE'),
         entities: [User, SentenceKo],
         synchronize: true, // shouldn't be used in production - otherwise you can lose production data.
+        logging: configService.get('NODE_ENV') === 'development',
       }),
       inject: [ConfigService],
     }),
