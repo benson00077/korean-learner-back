@@ -83,10 +83,15 @@ v0.2.0 Built w/ Nest.js
   - [ ] Auth strategy
 - [ ] Sentence module
   - [x] Bulk insert from json file (via typeORM QueryBuilder)
+  - [ ] Bulk insert only under Auth
   - [ ] Support Full Text Search w/ srategies
 - [ ] Shows module
-  - [ ] recored show name, and episode
+  - [ ] note for show name, episode
   - [ ] Mapping the time_stamps_id for each subtitles, which should also include show name and episode
+- [ ] Search module
+  - [ ] note for search histories and counts
+- [ ] Others
+  - [ ] Dtos class-validator
 
 <p align="right">(<a href="#user-content-readme-top">back to top</a>)</p>
 
@@ -130,39 +135,61 @@ CREATE TABLE IF NOT EXISTS `koPos` (
 ### 5.1.3. Entity Relationship Diagrams
 ```mermaid
 erDiagram
-    USERS }|--|{ SENTENCES: collect
-    SENTENCES ||--|| SENTENCES_KO: contains
-    SENTENCES |o--o| SENTENCES_ZH: contains
-    SENTENCES |o--o| SENTENCES_EN: contains
-    USERS }|--|{ SHOWS: collect
+    %% USERS }|--|{ SENTENCES-KO: collect
+    SENTENCES-KO ||--o| SENTENCES-ZH: contains
+    SENTENCES-KO ||--o| SENTENCES-EN: contains
+    USERS ||--|{ USER_SENTENCE-KO: select
+    SENTENCES-KO ||--|{ USER_SENTENCE-KO: map
+    USERS ||--|{ USER_SHOW: select
+    SHOWS ||--|{ USER_SHOW: map
+    USERS ||--|{ USER_SEARCH: record
+    SEARCHES ||--|{ USER_SEARCH: map
 
     USERS {
         int id
         string email
         intArr sentences_id
     }
-    SENTENCES {
-        intArr users_id
-        int time_stamps_id
-    }
-    SENTENCES_KO {
+    SENTENCES-KO {
         int time_stamps_id
         string pos
         string sentences
     }
-    SENTENCES_ZH {
+    SENTENCES-ZH {
         int time_stamps_id
         string sentences
     }
-    SENTENCES_EN {
+    SENTENCES-EN {
         int time_stamps_id
         string sentences
     }
     SHOWS {
-        intArr users_id
         int id
+        intArr user_id
         string name
         int episode
+    }
+    SEARCHES {
+        int id
+        int user_id
+        str field
+        str value
+        int counts
+    }
+    USER_SENTENCE-KO {
+        int id
+        int user_id
+        int time_stamps_id
+    }
+    USER_SEARCH {
+        int id
+        int user_id
+        int search_id
+    }
+    USER_SHOW {
+        int id
+        int user_id
+        int show_id
     }
 ```
 
