@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,9 +15,7 @@ export class UsersService {
     const user = new User();
     user.email = createUserDto.email;
     user.hash = createUserDto.hash;
-
-    console.log('User created...');
-
+    Logger.verbose('User created...');
     return this.userRepository.save(user);
   }
 

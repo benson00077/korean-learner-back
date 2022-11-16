@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InsertResult, Repository } from 'typeorm';
 import { SentenceKo } from './sentenceKo.entity';
@@ -21,9 +21,7 @@ export class SentenceKoService {
         pos: data.pos,
       });
     });
-
-    console.log('Inserting setence in Korean...');
-
+    Logger.verbose('Inserting setence in Korean...');
     const inserted = this.sentenceKoRepository
       .createQueryBuilder()
       .insert()
