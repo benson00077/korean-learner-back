@@ -16,9 +16,7 @@ export class User {
   @Column({ default: true })
   isActive: string;
 
-  @ManyToMany(() => SentenceKo, (sentenceKo) => sentenceKo.users, {
-    cascade: ['insert', 'update']
-  })
+  @ManyToMany(() => SentenceKo, (sentenceKo) => sentenceKo.users)
   @JoinTable({
     name: 'users_sentences'
   })
