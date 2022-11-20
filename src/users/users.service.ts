@@ -32,6 +32,15 @@ export class UsersService {
     await this.userRepository.delete(id);
   }
 
+  async remvoeFavorite(id: number, sentencesIds: number[]): Promise<void> {
+    const tableName = this.userRepository.metadata.tableName;
+    await this.userRepository
+      .createQueryBuilder()
+      .relation(SentenceKo, tableName)
+      .of(sentencesIds)
+      .remove(id);
+  }
+
   async addFavorite(id: number, sentencesIds: number[]): Promise<void> {
     const tableName = this.userRepository.metadata.tableName;
     await this.userRepository

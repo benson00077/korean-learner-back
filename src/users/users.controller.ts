@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -11,6 +12,7 @@ import { TypeormFilter } from 'src/common/exceptions/typeorm/typeorm.filter';
 import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
 import { AddFavorite } from './dto/add-favorite.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { RemoveFavorite } from './dto/remove-favorite.dto';
 import { User } from './user.entitiy';
 import { UsersService } from './users.service';
 
@@ -33,15 +35,29 @@ export class UsersController {
   findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
+
   @Post(':id/favorite')
   @UseFilters(TypeormFilter)
-  addFavorite(
+  async addFavorite(
     @Param('id', ParseIntPipe) id: number,
     @Body() sentences: AddFavorite,
-  ): Promise<void> {
+  ): Promise<SentenceKo[]> {
     let { ids } = sentences;
     let idsArr = JSON.parse(ids) as number[];
-    return this.usersService.addFavorite(id, idsArr);
+    await this.usersService.addFavorite(id, idsArr);
+    return this.usersService.getFavorite(id);
+  }
+
+  @Delete(':id/favorite')
+  @UseFilters(TypeormFilter)
+  async remvoeFavorite(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() sentences: RemoveFavorite,
+  ): Promise<SentenceKo[]> {
+    let { ids } = sentences;
+    let idsArr = JSON.parse(ids) as number[];
+    await this.usersService.remvoeFavorite(id, idsArr);
+    return this.usersService.getFavorite(id);
   }
 
   @Get(':id/favorite')
