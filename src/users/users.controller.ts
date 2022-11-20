@@ -43,8 +43,7 @@ export class UsersController {
     @Body() sentences: AddFavorite,
   ): Promise<SentenceKo[]> {
     let { ids } = sentences;
-    let idsArr = JSON.parse(ids) as number[];
-    await this.usersService.addFavorite(id, idsArr);
+    await this.usersService.addFavorite(id, ids);
     return this.usersService.getFavorite(id);
   }
 
@@ -55,8 +54,7 @@ export class UsersController {
     @Body() sentences: RemoveFavorite,
   ): Promise<SentenceKo[]> {
     let { ids } = sentences;
-    let idsArr = JSON.parse(ids) as number[];
-    await this.usersService.remvoeFavorite(id, idsArr);
+    await this.usersService.remvoeFavorite(id, ids);
     return this.usersService.getFavorite(id);
   }
 

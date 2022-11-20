@@ -85,14 +85,14 @@ v0.2.0 Built w/ Nest.js
 - [ ] Sentence module
   - [x] Bulk insert from json file (via typeORM QueryBuilder)
   - [ ] Bulk insert only under Auth
-  - [ ] Support Full Text Search w/ srategies
+  - [x] Support Full Text Search w/ srategies
 - [ ] Shows module
-  - [ ] note for show name, episode
+  - [ ] record for show name, episode
   - [ ] Mapping the time_stamps_id for each subtitles, which should also include show name and episode
 - [ ] Search module
-  - [ ] note for search histories and counts
+  - [ ] record for search histories and counts
 - [ ] Others
-  - [ ] Dtos class-validator
+  - [x] Dtos use validation pipe
 
 <p align="right">(<a href="#user-content-readme-top">back to top</a>)</p>
 

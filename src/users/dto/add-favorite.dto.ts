@@ -1,6 +1,7 @@
+import { IsArray, IsNotEmpty } from "class-validator";
+
 export class AddFavorite {
-  //TODO
-  // @IsArray()
-  // ids: string[]
-  ids: string
+  @IsArray()
+  @IsNotEmpty()
+  ids: number[]
 }
