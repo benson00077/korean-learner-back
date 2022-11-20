@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
+import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
+import { Entity, Column, PrimaryGeneratedColumn, Index, ManyToMany, JoinTable } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -14,4 +15,12 @@ export class User {
 
   @Column({ default: true })
   isActive: string;
+
+  @ManyToMany(() => SentenceKo, (sentenceKo) => sentenceKo.users, {
+    cascade: ['insert', 'update']
+  })
+  @JoinTable({
+    name: 'users_sentences'
+  })
+  sentences: SentenceKo[];
 }

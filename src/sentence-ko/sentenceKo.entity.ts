@@ -1,4 +1,5 @@
-import { Column, Entity, Index, PrimaryColumn } from 'typeorm';
+import { User } from 'src/users/user.entitiy';
+import { Column, Entity, Index, ManyToMany, PrimaryColumn } from 'typeorm';
 
 @Entity('sentenceKo')
 export class SentenceKo {
@@ -12,4 +13,7 @@ export class SentenceKo {
   @Index({ fulltext: true, parser: 'ngram'})
   @Column()
   sentences: string;
+
+  @ManyToMany(() => User, (user) => user.sentences)
+  users: User[];
 }

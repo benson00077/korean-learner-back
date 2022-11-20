@@ -81,6 +81,7 @@ v0.2.0 Built w/ Nest.js
   - [ ] Hash password
   - [x] No duplicate user / email
   - [ ] Auth strategy
+  - [ ] Cache login users
 - [ ] Sentence module
   - [x] Bulk insert from json file (via typeORM QueryBuilder)
   - [ ] Bulk insert only under Auth
@@ -110,6 +111,7 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'PORT';
 
 mysql> CREATE DATABASE `korean_learner`;
 mysql> use `kroean_learner`;
+mysql> SHOW TABLES:
 mysql> DESC sentenceKo;
 ```
 

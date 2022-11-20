@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entitiy';
@@ -29,5 +30,26 @@ export class UsersService {
 
   async remove(id: string): Promise<void> {
     await this.userRepository.delete(id);
+  }
+
+  async addFavorite(id: number, sentencesIds: number[]): Promise<void> {
+    const tableName = this.userRepository.metadata.tableName;
+    await this.userRepository
+      .createQueryBuilder()
+      .relation(SentenceKo, tableName)
+      .of(sentencesIds)
+      .add(id);
+  }
+
+  async getFavorite(id: number): Promise<SentenceKo[]> {
+    //TODO use tableName
+    const tableName = this.userRepository.metadata.tableName;
+    const favorite = await this.userRepository
+      .createQueryBuilder(tableName)
+      .leftJoin(`${tableName}.sentences`, `ko`)
+      .addSelect([`ko.pos`, `ko.sentences`])
+      .where(`${tableName}.id = :id`, { id: id })
+      .getOne();
+    return favorite.sentences;
   }
 }

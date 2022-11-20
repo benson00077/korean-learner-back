@@ -19,6 +19,7 @@ export class SentenceKoService {
         timeId: data.timeId,
         sentences: data.sentence,
         pos: data.pos,
+        users: null,
       });
     });
     Logger.verbose('Inserting setence in Korean...');
