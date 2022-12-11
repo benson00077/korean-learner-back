@@ -20,5 +20,5 @@ export class User {
   @JoinTable({
     name: 'users_sentences'
   })
-  sentences: SentenceKo[];
+  subtitles: SentenceKo[];
 }

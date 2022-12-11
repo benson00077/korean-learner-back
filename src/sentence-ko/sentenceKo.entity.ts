@@ -11,9 +11,9 @@ export class SentenceKo {
   pos: string;
 
   @Index({ fulltext: true, parser: 'ngram'})
-  @Column()
-  sentences: string;
+  @Column('simple-array')
+  subtitles: string[];
 
-  @ManyToMany(() => User, (user) => user.sentences)
+  @ManyToMany(() => User, (user) => user.subtitles)
   users: User[];
 }

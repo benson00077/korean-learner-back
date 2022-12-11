@@ -16,7 +16,7 @@ export class SentenceKoController {
     const parsed = datas.map((data) => {
       return {
         timeId: +`${data.chunckId}${data.startTime.replace(/\D/g, '')}`,
-        sentence: JSON.stringify(data.subtitles),
+        subtitles: data.subtitles,
         pos: JSON.stringify(data.pos),
       };
     });

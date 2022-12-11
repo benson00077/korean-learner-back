@@ -55,10 +55,10 @@ export class UsersService {
     const tableName = this.userRepository.metadata.tableName;
     const favorite = await this.userRepository
       .createQueryBuilder(tableName)
-      .leftJoin(`${tableName}.sentences`, `ko`)
-      .addSelect([`ko.pos`, `ko.sentences`])
+      .leftJoin(`${tableName}.subtitles`, `ko`)
+      .addSelect([`ko.pos`, `ko.subtitles`])
       .where(`${tableName}.id = :id`, { id: id })
       .getOne();
-    return favorite.sentences;
+    return favorite.subtitles;
   }
 }
