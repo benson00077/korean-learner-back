@@ -32,7 +32,7 @@ export class UsersService {
     await this.userRepository.delete(id);
   }
 
-  async remvoeFavorite(id: number, sentencesIds: number[]): Promise<void> {
+  async removeFavorite(id: number, sentencesIds: number[]): Promise<void> {
     const tableName = this.userRepository.metadata.tableName;
     await this.userRepository
       .createQueryBuilder()

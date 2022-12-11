@@ -49,12 +49,12 @@ export class UsersController {
 
   @Delete(':id/favorite')
   @UseFilters(TypeormFilter)
-  async remvoeFavorite(
+  async removeFavorite(
     @Param('id', ParseIntPipe) id: number,
     @Body() sentences: RemoveFavorite,
   ): Promise<SentenceKo[]> {
     let { ids } = sentences;
-    await this.usersService.remvoeFavorite(id, ids);
+    await this.usersService.removeFavorite(id, ids);
     return this.usersService.getFavorite(id);
   }
 
