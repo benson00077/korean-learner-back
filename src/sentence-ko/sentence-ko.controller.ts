@@ -4,6 +4,7 @@ import { SentenceKoService } from './sentence-ko.service';
 import * as mockSentenceKo from './mockSentenceKoData.json';
 import { TypeormFilter } from 'src/common/exceptions/typeorm/typeorm.filter';
 import { SearchSentenceKoDto } from './dto/search-sentence-ko.dto';
+import { SearchSentenceContextDto } from './dto/search-sentence-context.dto';
 
 @Controller('sentence-ko')
 export class SentenceKoController {
@@ -34,6 +35,12 @@ export class SentenceKoController {
   @UseFilters(TypeormFilter)
   searchByPosTag(@Body() datas: SearchSentenceKoDto) {
     return this.sentenceKoService.searchByPosTag(datas)
+  }
+
+  @Get('/search/context')
+  @UseFilters(TypeormFilter)
+  searchSentenceContext(@Body() datas: SearchSentenceContextDto) {
+    return this.sentenceKoService.searchSentenceContext(datas)
   }
 
   @Get()

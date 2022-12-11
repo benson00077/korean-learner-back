@@ -6,6 +6,7 @@
 
 <details>
   <summary>📔 Table of Contents</summary>
+
 - [1. 👉 About the porject](#1--about-the-porject)
   - [1.1. Built with](#11-built-with)
 - [2. 👉 Getting Started](#2--getting-started)
@@ -19,6 +20,7 @@
     - [5.1.1. Commands in common](#511-commands-in-common)
     - [5.1.2. Tables](#512-tables)
     - [5.1.3. Entity Relationship Diagrams](#513-entity-relationship-diagrams)
+
 </details>
 
 <!-- ABOUT THE PROJECT -->
@@ -86,6 +88,7 @@ v0.2.0 Built w/ Nest.js
   - [x] Bulk insert from json file (via typeORM QueryBuilder)
   - [ ] Bulk insert only under Auth
   - [x] Support Full Text Search w/ srategies
+  - [x] Support sentence's context search (by timeId)
 - [ ] Shows module
   - [ ] record for show name, episode
   - [ ] Mapping the time_stamps_id for each subtitles, which should also include show name and episode
@@ -93,6 +96,8 @@ v0.2.0 Built w/ Nest.js
   - [ ] record for search histories and counts
 - [ ] Others
   - [x] Dtos use validation pipe
+- [ ] Throttler
+- [ ] Swagger
 
 <p align="right">(<a href="#user-content-readme-top">back to top</a>)</p>
 
@@ -135,6 +140,7 @@ CREATE TABLE IF NOT EXISTS `koPos` (
 ```
 
 ### 5.1.3. Entity Relationship Diagrams
+
 ```mermaid
 erDiagram
     %% USERS }|--|{ SENTENCES-KO: collect
