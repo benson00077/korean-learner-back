@@ -51,12 +51,11 @@ export class UsersService {
   }
 
   async getFavorite(id: number): Promise<SentenceKo[]> {
-    //TODO use tableName
     const tableName = this.userRepository.metadata.tableName;
     const favorite = await this.userRepository
       .createQueryBuilder(tableName)
       .leftJoin(`${tableName}.subtitles`, `ko`)
-      .addSelect([`ko.pos`, `ko.subtitles`])
+      .addSelect([`ko.timeId`, `ko.subtitles`])
       .where(`${tableName}.id = :id`, { id: id })
       .getOne();
     return favorite.subtitles;

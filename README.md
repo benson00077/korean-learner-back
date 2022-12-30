@@ -115,9 +115,11 @@ mysql> SHOW DATABASES;
 mysql> SHOW GLOBAL VARIABLES LIKE 'PORT';
 
 mysql> CREATE DATABASE `korean_learner`;
-mysql> use `kroean_learner`;
-mysql> SHOW TABLES:
+mysql> use `korean_learner`;
+mysql> SHOW TABLES;
 mysql> DESC sentenceKo;
+
+mysql> DROP TABLE  `users_sentences`
 ```
 
 ### 5.1.2. Tables
