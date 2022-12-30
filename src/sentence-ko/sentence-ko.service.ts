@@ -48,6 +48,15 @@ export class SentenceKoService {
     return match
   }
 
+  async searchByIds(ids: number[]): Promise<SentenceKo[]> {
+    const match = await this.sentenceKoRepository
+      .find({
+        select: {timeId: true, subtitles: true},
+        where: ids.map(id => ({timeId: id}))
+      })
+    return match
+  }
+
   async searchSentenceContext(datas: SearchSentenceContextDto): Promise<SentenceKo[]> {
     const { timeId, timeRange } = datas;
     const timeRangeMs = timeRange * 1000

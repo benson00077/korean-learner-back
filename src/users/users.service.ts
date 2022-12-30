@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { SentenceKoService } from 'src/sentence-ko/sentence-ko.service';
 import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -10,6 +11,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private sentenceKoService: SentenceKoService,
   ) {}
 
   create(createUserDto: CreateUserDto): Promise<User> {
@@ -32,22 +34,22 @@ export class UsersService {
     await this.userRepository.delete(id);
   }
 
-  async removeFavorite(id: number, sentencesIds: number[]): Promise<void> {
-    const tableName = this.userRepository.metadata.tableName;
-    await this.userRepository
-      .createQueryBuilder()
-      .relation(SentenceKo, tableName)
-      .of(sentencesIds)
-      .remove(id);
+  async removeFavorite(id: number, sentencesIds: number[]): Promise<User> {
+    const user = await this.findOne(id);
+    user.subtitles = await this.getFavorite(id);
+    user.subtitles = user.subtitles.filter((subtitle) => {
+      return !sentencesIds.includes(subtitle.timeId);
+    });
+    const updated = await this.userRepository.manager.save(user);
+    return updated;
   }
 
-  async addFavorite(id: number, sentencesIds: number[]): Promise<void> {
-    const tableName = this.userRepository.metadata.tableName;
-    await this.userRepository
-      .createQueryBuilder()
-      .relation(SentenceKo, tableName)
-      .of(sentencesIds)
-      .add(id);
+  async addFavorite(id: number, sentencesIds: number[]): Promise<User> {
+    const user = await this.findOne(id);
+    const sentences = await this.sentenceKoService.searchByIds(sentencesIds);
+    user.subtitles = sentences;
+    const updated = await this.userRepository.manager.save(user);
+    return updated;
   }
 
   async getFavorite(id: number): Promise<SentenceKo[]> {

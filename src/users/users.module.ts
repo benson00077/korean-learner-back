@@ -3,10 +3,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entitiy';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
+import { SentenceKoService } from 'src/sentence-ko/sentence-ko.service';
+import { SentenceKoModule } from 'src/sentence-ko/sentence-ko.module';
+import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
-  providers: [UsersService],
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([SentenceKo]),
+    SentenceKoModule,
+  ],
+  providers: [UsersService, SentenceKoService],
   controllers: [UsersController],
 })
 export class UsersModule {}

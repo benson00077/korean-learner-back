@@ -16,7 +16,9 @@ export class User {
   @Column({ default: true })
   isActive: string;
 
-  @ManyToMany(() => SentenceKo, (sentenceKo) => sentenceKo.users)
+  @ManyToMany(() => SentenceKo, (sentenceKo) => sentenceKo.users, {
+    cascade: true
+  })
   @JoinTable({
     name: 'users_sentences'
   })

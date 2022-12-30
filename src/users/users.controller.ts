@@ -41,10 +41,9 @@ export class UsersController {
   async addFavorite(
     @Param('id', ParseIntPipe) id: number,
     @Body() sentences: AddFavorite,
-  ): Promise<SentenceKo[]> {
+  ): Promise<User> {
     let { ids } = sentences;
-    await this.usersService.addFavorite(id, ids);
-    return this.usersService.getFavorite(id);
+    return await this.usersService.addFavorite(id, ids);
   }
 
   @Delete(':id/favorite')
@@ -52,10 +51,9 @@ export class UsersController {
   async removeFavorite(
     @Param('id', ParseIntPipe) id: number,
     @Body() sentences: RemoveFavorite,
-  ): Promise<SentenceKo[]> {
+  ): Promise<User> {
     let { ids } = sentences;
-    await this.usersService.removeFavorite(id, ids);
-    return this.usersService.getFavorite(id);
+    return await this.usersService.removeFavorite(id, ids);
   }
 
   @Get(':id/favorite')
