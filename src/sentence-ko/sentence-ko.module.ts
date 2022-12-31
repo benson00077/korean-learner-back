@@ -6,6 +6,7 @@ import { SentenceKoController } from './sentence-ko.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([SentenceKo])],
+  exports: [SentenceKoService],
   providers: [SentenceKoService],
   controllers: [SentenceKoController],
 })

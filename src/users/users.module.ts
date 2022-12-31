@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entitiy';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
-import { SentenceKoService } from 'src/sentence-ko/sentence-ko.service';
 import { SentenceKoModule } from 'src/sentence-ko/sentence-ko.module';
 import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
 
@@ -13,7 +12,7 @@ import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
     TypeOrmModule.forFeature([SentenceKo]),
     SentenceKoModule,
   ],
-  providers: [UsersService, SentenceKoService],
+  providers: [UsersService],
   controllers: [UsersController],
 })
 export class UsersModule {}
