@@ -131,7 +131,7 @@ mysql> DROP TABLE  `users_sentences`
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `username` varchar(50) NOT NULL,
-  `hash` BINARY(32) NOT NULL,
+  `password` BINARY(32) NOT NULL,
   `isActive` BOOLEAN,
   PRIMARY KEY(`id`)
 );

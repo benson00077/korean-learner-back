@@ -8,10 +8,10 @@ export class User {
 
   @Index({ unique: true })
   @Column()
-  email: string;
+  username: string;
 
   @Column()
-  hash: string;
+  password: string;
 
   @Column({ default: true })
   isActive: string;

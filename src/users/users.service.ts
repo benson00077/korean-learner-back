@@ -16,8 +16,8 @@ export class UsersService {
 
   create(createUserDto: CreateUserDto): Promise<User> {
     const user = new User();
-    user.email = createUserDto.email;
-    user.hash = createUserDto.hash;
+    user.username = createUserDto.username;
+    user.password = createUserDto.password;
     Logger.verbose('User created...');
     return this.userRepository.save(user);
   }
@@ -26,8 +26,8 @@ export class UsersService {
     return this.userRepository.find();
   }
 
-  findOneByEmail(email: string): Promise<User> {
-    return this.userRepository.findOneBy({ email });
+  findOneByUsername(username: string): Promise<User> {
+    return this.userRepository.findOneBy({ username });
   }
 
   findOne(id: number): Promise<User> {
