@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/user.entitiy';
 import { SentenceKoModule } from './sentence-ko/sentence-ko.module';
 import { SentenceKo } from './sentence-ko/sentenceKo.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { SentenceKo } from './sentence-ko/sentenceKo.entity';
     UsersModule,
     ConfigModule,
     SentenceKoModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

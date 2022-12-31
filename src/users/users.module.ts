@@ -12,6 +12,7 @@ import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
     TypeOrmModule.forFeature([SentenceKo]),
     SentenceKoModule,
   ],
+  exports: [UsersService],
   providers: [UsersService],
   controllers: [UsersController],
 })
