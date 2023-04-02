@@ -27,6 +27,8 @@ import { AuthModule } from './auth/auth.module';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().allow(''),
         DB_DATABASE: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRE_IN: Joi.string().required(),
       }),
       validationOptions: {
         allowUnknown: true, // nvm have env var like NVM_INC
@@ -35,6 +37,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get('DB_HOST'),
@@ -46,7 +49,6 @@ import { AuthModule } from './auth/auth.module';
         synchronize: configService.get('NODE_ENV') === 'development',
         logging: configService.get('NODE_ENV') === 'development',
       }),
-      inject: [ConfigService],
     }),
     UsersModule,
     ConfigModule,

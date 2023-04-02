@@ -16,7 +16,7 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  //TODO: move to other contorller, to aligned with user controoler url
+  //TODO: just for demo here, to be moved to other contorller, to aligned with user controoler url
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {
@@ -24,7 +24,7 @@ export class AppController {
     return this.authService.login(req.user);
   }
 
-  //TODO: move to other controller, to aligned with user controoler url
+  //TODO: just for demo here, to be moved to other controller, to aligned with user controoler url
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
