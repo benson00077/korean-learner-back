@@ -7,7 +7,9 @@ import {
   ParseIntPipe,
   Post,
   UseFilters,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { TypeormFilter } from 'src/common/exceptions/typeorm/typeorm.filter';
 import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
 import { AddFavorite } from './dto/add-favorite.dto';
@@ -34,6 +36,7 @@ export class UsersController {
     return this.usersService.removeOne(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post(':id/favorite')
   @UseFilters(TypeormFilter)
   async addFavorite(
@@ -44,6 +47,7 @@ export class UsersController {
     return await this.usersService.addFavorite(id, ids);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id/favorite')
   @UseFilters(TypeormFilter)
   async removeFavorite(

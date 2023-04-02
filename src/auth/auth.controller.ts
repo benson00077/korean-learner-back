@@ -3,7 +3,6 @@ import {
   Body,
   Post,
   UseGuards,
-  Request,
   Get,
   UseFilters,
 } from '@nestjs/common';
@@ -32,7 +31,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/profile')
-  async getProfile(@Request() req) {
-    return req.user;
+  async getProfile(@Body() user) {
+    return user;
   }
 }

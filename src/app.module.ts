@@ -15,7 +15,7 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     ConfigModule.forRoot({
       envFilePath: ['.env.development', '.env.production'],
-      // isGlobal: true,
+      isGlobal: true,
       load: [configuration],
       validationSchema: Joi.object({
         NODE_ENV: Joi.string()
@@ -29,6 +29,7 @@ import { AuthModule } from './auth/auth.module';
         DB_DATABASE: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRE_IN: Joi.string().required(),
+        JWT_NO_GUARD: Joi.boolean(),
       }),
       validationOptions: {
         allowUnknown: true, // nvm have env var like NVM_INC
