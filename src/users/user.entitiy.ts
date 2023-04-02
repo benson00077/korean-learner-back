@@ -1,5 +1,12 @@
 import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
-import { Entity, Column, PrimaryGeneratedColumn, Index, ManyToMany, JoinTable } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  Index,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -17,10 +24,10 @@ export class User {
   isActive: string;
 
   @ManyToMany(() => SentenceKo, (sentenceKo) => sentenceKo.users, {
-    cascade: true
+    cascade: true,
   })
   @JoinTable({
-    name: 'users_sentences'
+    name: 'users_sentences',
   })
   subtitles: SentenceKo[];
 }

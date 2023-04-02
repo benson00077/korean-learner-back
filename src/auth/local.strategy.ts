@@ -16,7 +16,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
 
   /**
-   *  Passport will build a user object based on the return value of our validate() method, 
+   *  Passport will build a user object based on the return value of our validate() method,
    *  and attach it as a property on the Request object.
    */
   async validate(username: string, password: string): Promise<Partial<User>> {

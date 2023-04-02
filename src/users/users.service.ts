@@ -31,9 +31,9 @@ export class UsersService {
   }
 
   findOne(id: number): Promise<User> {
-    return this.userRepository.findOneBy({ 
+    return this.userRepository.findOneBy({
       id,
-      isActive: '1'
+      isActive: '1',
     });
   }
 
@@ -41,7 +41,7 @@ export class UsersService {
     const user = await this.findOne(id);
     if (user) {
       user.isActive = '2';
-      await this.userRepository.save(user)
+      await this.userRepository.save(user);
       //await this.userRepository.delete(id);
     }
   }

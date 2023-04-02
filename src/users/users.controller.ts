@@ -32,7 +32,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  removeOne(@Param('id', ParseIntPipe) id:number): Promise<void> {
+  removeOne(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.usersService.removeOne(id);
   }
 
@@ -43,7 +43,7 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() sentences: AddFavorite,
   ): Promise<User> {
-    let { ids } = sentences;
+    const { ids } = sentences;
     return await this.usersService.addFavorite(id, ids);
   }
 
@@ -54,14 +54,14 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() sentences: RemoveFavorite,
   ): Promise<User> {
-    let { ids } = sentences;
+    const { ids } = sentences;
     return await this.usersService.removeFavorite(id, ids);
   }
 
   @Get(':id/favorite')
   @UseFilters(TypeormFilter)
-  getavorite(@Param('id', ParseIntPipe) id: number): Promise<SentenceKo[]> {
+  getFavorite(@Param('id', ParseIntPipe) id: number): Promise<SentenceKo[]> {
     return this.usersService.getFavorite(id);
   }
 }
-let a = { ids: '[2000057849]' };
+const a = { ids: '[2000057849]' };

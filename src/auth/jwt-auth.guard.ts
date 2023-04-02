@@ -20,7 +20,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       const { method, url } = httpContext.getRequest<Request>();
       const handler = context.getHandler().name;
       const className = context.getClass().name;
-      Logger.verbose(`Skipping JwtAuthGuard: ${method} ${url}`, `${className} -> ${handler}`);
+      Logger.verbose(
+        `Skipping JwtAuthGuard: ${method} ${url}`,
+        `${className} -> ${handler}`,
+      );
       return true;
     }
     return super.canActivate(context);

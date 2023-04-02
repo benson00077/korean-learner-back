@@ -34,13 +34,13 @@ export class SentenceKoController {
   @Get('/search')
   @UseFilters(TypeormFilter)
   searchByPosTag(@Body() datas: SearchSentenceKoDto) {
-    return this.sentenceKoService.searchByPosTag(datas)
+    return this.sentenceKoService.searchByPosTag(datas);
   }
 
   @Get('/search/context')
   @UseFilters(TypeormFilter)
   searchSentenceContext(@Body() datas: SearchSentenceContextDto) {
-    return this.sentenceKoService.searchSentenceContext(datas)
+    return this.sentenceKoService.searchSentenceContext(datas);
   }
 
   @Get()
