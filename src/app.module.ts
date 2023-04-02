@@ -9,12 +9,13 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/user.entitiy';
 import { SentenceKoModule } from './sentence-ko/sentence-ko.module';
 import { SentenceKo } from './sentence-ko/sentenceKo.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: ['.env.development', '.env.production'],
-      // isGlobal: true,
+      isGlobal: true,
       load: [configuration],
       validationSchema: Joi.object({
         NODE_ENV: Joi.string()
@@ -26,6 +27,9 @@ import { SentenceKo } from './sentence-ko/sentenceKo.entity';
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().allow(''),
         DB_DATABASE: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRE_IN: Joi.string().required(),
+        JWT_NO_GUARD: Joi.boolean(),
       }),
       validationOptions: {
         allowUnknown: true, // nvm have env var like NVM_INC
@@ -34,6 +38,7 @@ import { SentenceKo } from './sentence-ko/sentenceKo.entity';
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
         host: configService.get('DB_HOST'),
@@ -45,11 +50,11 @@ import { SentenceKo } from './sentence-ko/sentenceKo.entity';
         synchronize: configService.get('NODE_ENV') === 'development',
         logging: configService.get('NODE_ENV') === 'development',
       }),
-      inject: [ConfigService],
     }),
     UsersModule,
     ConfigModule,
     SentenceKoModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

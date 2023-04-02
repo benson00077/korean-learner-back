@@ -82,7 +82,7 @@ v0.2.0 Built w/ Nest.js
   - [ ] Controller unit test
   - [ ] Hash password
   - [x] No duplicate user / email
-  - [ ] Auth strategy
+  - [x] Auth strategy
   - [ ] Cache login users
   - [x] Favorite sentences
     - [x] Use Cascades feature of TypeORM to save(update or delete table) columns in the many-to-many relations table, meaning you may want to inject sentence service.  
@@ -131,7 +131,7 @@ mysql> DROP TABLE  `users_sentences`
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `username` varchar(50) NOT NULL,
-  `hash` BINARY(32) NOT NULL,
+  `password` BINARY(32) NOT NULL,
   `isActive` BOOLEAN,
   PRIMARY KEY(`id`)
 );

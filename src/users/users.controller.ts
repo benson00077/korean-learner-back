@@ -7,11 +7,12 @@ import {
   ParseIntPipe,
   Post,
   UseFilters,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { TypeormFilter } from 'src/common/exceptions/typeorm/typeorm.filter';
 import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
 import { AddFavorite } from './dto/add-favorite.dto';
-import { CreateUserDto } from './dto/create-user.dto';
 import { RemoveFavorite } from './dto/remove-favorite.dto';
 import { User } from './user.entitiy';
 import { UsersService } from './users.service';
@@ -19,12 +20,6 @@ import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  @Post()
-  @UseFilters(TypeormFilter)
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create(createUserDto);
-  }
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
@@ -36,30 +31,37 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Delete(':id')
+  removeOne(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.usersService.removeOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post(':id/favorite')
   @UseFilters(TypeormFilter)
   async addFavorite(
     @Param('id', ParseIntPipe) id: number,
     @Body() sentences: AddFavorite,
   ): Promise<User> {
-    let { ids } = sentences;
+    const { ids } = sentences;
     return await this.usersService.addFavorite(id, ids);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id/favorite')
   @UseFilters(TypeormFilter)
   async removeFavorite(
     @Param('id', ParseIntPipe) id: number,
     @Body() sentences: RemoveFavorite,
   ): Promise<User> {
-    let { ids } = sentences;
+    const { ids } = sentences;
     return await this.usersService.removeFavorite(id, ids);
   }
 
   @Get(':id/favorite')
   @UseFilters(TypeormFilter)
-  getavorite(@Param('id', ParseIntPipe) id: number): Promise<SentenceKo[]> {
+  getFavorite(@Param('id', ParseIntPipe) id: number): Promise<SentenceKo[]> {
     return this.usersService.getFavorite(id);
   }
 }
-let a = { ids: '[2000057849]' };
+const a = { ids: '[2000057849]' };

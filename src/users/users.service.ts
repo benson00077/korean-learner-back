@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { SentenceKoService } from 'src/sentence-ko/sentence-ko.service';
 import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from '../auth/dto/create-user.dto';
 import { User } from './user.entitiy';
 
 @Injectable()
@@ -16,8 +16,8 @@ export class UsersService {
 
   create(createUserDto: CreateUserDto): Promise<User> {
     const user = new User();
-    user.email = createUserDto.email;
-    user.hash = createUserDto.hash;
+    user.username = createUserDto.username;
+    user.password = createUserDto.password;
     Logger.verbose('User created...');
     return this.userRepository.save(user);
   }
@@ -26,12 +26,24 @@ export class UsersService {
     return this.userRepository.find();
   }
 
-  findOne(id: number): Promise<User> {
-    return this.userRepository.findOneBy({ id });
+  findOneByUsername(username: string): Promise<User> {
+    return this.userRepository.findOneBy({ username });
   }
 
-  async remove(id: string): Promise<void> {
-    await this.userRepository.delete(id);
+  findOne(id: number): Promise<User> {
+    return this.userRepository.findOneBy({
+      id,
+      isActive: '1',
+    });
+  }
+
+  async removeOne(id: number): Promise<void> {
+    const user = await this.findOne(id);
+    if (user) {
+      user.isActive = '2';
+      await this.userRepository.save(user);
+      //await this.userRepository.delete(id);
+    }
   }
 
   async removeFavorite(id: number, sentencesIds: number[]): Promise<User> {

@@ -36,37 +36,40 @@ export class SentenceKoService {
 
   async searchByPosTag(datas: SearchSentenceKoDto) {
     const { pos, tag } = datas;
-    const tableName = this.sentenceKoRepository.metadata.tableName
+    const tableName = this.sentenceKoRepository.metadata.tableName;
     const match = await this.sentenceKoRepository
       // .createQueryBuilder()
-      // .select() // select * 
+      // .select() // select *
       .createQueryBuilder(tableName)
       .select([`${tableName}.timeId`, `${tableName}.subtitles`])
       .where(`MATCH(subtitles) AGAINST ('${pos}' IN BOOLEAN MODE)`)
-      .andWhere(`${tableName}.pos like :tag`, {tag: `%${tag}%`})
+      .andWhere(`${tableName}.pos like :tag`, { tag: `%${tag}%` })
       .getMany();
-    return match
+    return match;
   }
 
   async searchByIds(ids: number[]): Promise<SentenceKo[]> {
-    const match = await this.sentenceKoRepository
-      .find({
-        select: {timeId: true, subtitles: true},
-        where: ids.map(id => ({timeId: id}))
-      })
-    return match
+    const match = await this.sentenceKoRepository.find({
+      select: { timeId: true, subtitles: true },
+      where: ids.map((id) => ({ timeId: id })),
+    });
+    return match;
   }
 
-  async searchSentenceContext(datas: SearchSentenceContextDto): Promise<SentenceKo[]> {
+  async searchSentenceContext(
+    datas: SearchSentenceContextDto,
+  ): Promise<SentenceKo[]> {
     const { timeId, timeRange } = datas;
-    const timeRangeMs = timeRange * 1000
-    const tableName = this.sentenceKoRepository.metadata.tableName
+    const timeRangeMs = timeRange * 1000;
+    const tableName = this.sentenceKoRepository.metadata.tableName;
     const match = await this.sentenceKoRepository
       .createQueryBuilder(tableName)
       .select([`${tableName}.timeId`, `${tableName}.subtitles`])
-      .where(`${tableName}.timeId < ${timeId + timeRangeMs} 
-        OR ${tableName}.timeId > ${timeId - timeRangeMs}` )
-      .getMany()
-    return match
+      .where(
+        `${tableName}.timeId < ${timeId + timeRangeMs} 
+        OR ${tableName}.timeId > ${timeId - timeRangeMs}`,
+      )
+      .getMany();
+    return match;
   }
 }
