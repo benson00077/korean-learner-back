@@ -29,6 +29,11 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Delete(':id')
+  removeOne(@Param('id', ParseIntPipe) id:number): Promise<void> {
+    return this.usersService.removeOne(id);
+  }
+
   @Post(':id/favorite')
   @UseFilters(TypeormFilter)
   async addFavorite(

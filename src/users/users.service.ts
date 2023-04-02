@@ -31,11 +31,19 @@ export class UsersService {
   }
 
   findOne(id: number): Promise<User> {
-    return this.userRepository.findOneBy({ id });
+    return this.userRepository.findOneBy({ 
+      id,
+      isActive: '1'
+    });
   }
 
-  async remove(id: string): Promise<void> {
-    await this.userRepository.delete(id);
+  async removeOne(id: number): Promise<void> {
+    const user = await this.findOne(id);
+    if (user) {
+      user.isActive = '2';
+      await this.userRepository.save(user)
+      //await this.userRepository.delete(id);
+    }
   }
 
   async removeFavorite(id: number, sentencesIds: number[]): Promise<User> {
