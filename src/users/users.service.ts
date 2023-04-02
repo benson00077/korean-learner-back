@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { SentenceKoService } from 'src/sentence-ko/sentence-ko.service';
 import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from '../auth/dto/create-user.dto';
 import { User } from './user.entitiy';
 
 @Injectable()

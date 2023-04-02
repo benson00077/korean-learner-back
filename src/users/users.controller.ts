@@ -11,7 +11,6 @@ import {
 import { TypeormFilter } from 'src/common/exceptions/typeorm/typeorm.filter';
 import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
 import { AddFavorite } from './dto/add-favorite.dto';
-import { CreateUserDto } from './dto/create-user.dto';
 import { RemoveFavorite } from './dto/remove-favorite.dto';
 import { User } from './user.entitiy';
 import { UsersService } from './users.service';
@@ -19,12 +18,6 @@ import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  @Post()
-  @UseFilters(TypeormFilter)
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create(createUserDto);
-  }
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
