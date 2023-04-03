@@ -85,7 +85,7 @@ v0.2.0 Built w/ Nest.js
   - [x] Auth strategy
   - [ ] Cache login users
   - [x] Favorite sentences
-    - [x] Use Cascades feature of TypeORM to save(update or delete table) columns in the many-to-many relations table, meaning you may want to inject sentence service.  
+    - [x] Use Cascades feature of TypeORM to save(update or delete table) columns in the many-to-many relations table, meaning you may want to inject sentence service.
 - [ ] Sentence module
   - [x] Bulk insert from json file (via typeORM QueryBuilder)
   - [ ] Bulk insert only under Auth
@@ -93,7 +93,8 @@ v0.2.0 Built w/ Nest.js
   - [x] Support sentence's context search (by timeId)
 - [ ] Shows module
   - [ ] record for show name, episode
-  - [ ] Mapping the time_stamps_id for each subtitles, which should also include show name and episode
+  - [ ] Map to user table (many to many)
+  - [ ] Map to sentence table (one to many)
 - [ ] Search module
   - [ ] record for search histories and counts
 - [ ] Others
@@ -148,32 +149,26 @@ CREATE TABLE IF NOT EXISTS `koPos` (
 ```mermaid
 erDiagram
     %% USERS }|--|{ SENTENCES-KO: collect
-    SENTENCES-KO ||--o| SENTENCES-ZH: contains
-    SENTENCES-KO ||--o| SENTENCES-EN: contains
     USERS ||--|{ USER_SENTENCE-KO: select
     SENTENCES-KO ||--|{ USER_SENTENCE-KO: map
     USERS ||--|{ USER_SHOW: select
     SHOWS ||--|{ USER_SHOW: map
+    SHOWS ||--|{ SENTENCES-KO: includes
     USERS ||--|{ USER_SEARCH: record
     SEARCHES ||--|{ USER_SEARCH: map
 
     USERS {
         int id
-        string email
-        intArr sentences_id
+        string name
     }
     SENTENCES-KO {
         int time_stamps_id
         string pos
         string sentences
-    }
-    SENTENCES-ZH {
-        int time_stamps_id
-        string sentences
-    }
-    SENTENCES-EN {
-        int time_stamps_id
-        string sentences
+        string sentencesZh
+        string sentencesEn
+        intArr show_id
+        int episode_id
     }
     SHOWS {
         int id
