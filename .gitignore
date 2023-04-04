@@ -1,3 +1,7 @@
+# Subtitles source file
+src/assets/seeds/*
+!src/assets/seeds/README.md
+
 # Dotenv environment variables file
 .env.production
 .env.development

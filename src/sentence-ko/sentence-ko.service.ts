@@ -13,16 +13,19 @@ export class SentenceKoService {
     private sentenceKoRepository: Repository<SentenceKo>,
   ) {}
 
-  insert(datas: InsertSentenceKoDto[]): Promise<InsertResult> {
+  insert(showData: InsertSentenceKoDto[][]): Promise<InsertResult> {
     const sentencesKo: SentenceKo[] = [];
-    datas.forEach((data) => {
-      sentencesKo.push({
-        timeId: data.timeId,
-        subtitles: data.subtitles,
-        pos: data.pos,
-        users: null,
-      });
-    });
+    showData.forEach((episodeData, i) => {
+      episodeData.forEach(subtitles => {
+        sentencesKo.push({
+          timeId: subtitles.timeId,
+          subtitles: subtitles.subtitles,
+          subtitlesZh: subtitles.subtitlesZh,
+          pos: subtitles.pos,
+          users: null,
+        })
+      })
+    })
     Logger.verbose('Inserting setence in Korean...');
     const inserted = this.sentenceKoRepository
       .createQueryBuilder()

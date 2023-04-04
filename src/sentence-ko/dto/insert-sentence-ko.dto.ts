@@ -4,5 +4,6 @@ export class InsertSentenceKoDto {
   @IsNotEmpty()
   timeId: number;
   subtitles: string[];
+  subtitlesZh: string[];
   pos: string;
 }
