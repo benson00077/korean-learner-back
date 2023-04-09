@@ -13,28 +13,28 @@ export class SentenceKoService {
     private sentenceKoRepository: Repository<SentenceKo>,
   ) {}
 
-  insert(showData: InsertSentenceKoDto[][]): Promise<InsertResult> {
+  async insert(showData: InsertSentenceKoDto[][]): Promise<InsertResult> {
     const sentencesKo: SentenceKo[] = [];
     showData.forEach((episodeData, i) => {
-      episodeData.forEach(subtitles => {
+      episodeData.forEach((subtitles) => {
         sentencesKo.push({
           timeId: subtitles.timeId,
           subtitles: subtitles.subtitles,
           subtitlesZh: subtitles.subtitlesZh,
           pos: subtitles.pos,
           users: null,
-        })
-      })
-    })
+        });
+      });
+    });
     Logger.verbose('Inserting setence in Korean...');
-    const inserted = this.sentenceKoRepository
+    const inserted = await this.sentenceKoRepository
       .createQueryBuilder()
       .insert()
       .into(SentenceKo)
       .values(sentencesKo)
+      .orUpdate(['timeId', 'subtitles', 'subtitlesZh', 'pos'])
       .execute();
-
-    return inserted;
+    return inserted.raw;
   }
 
   async searchByPosTag(datas: SearchSentenceKoDto) {
