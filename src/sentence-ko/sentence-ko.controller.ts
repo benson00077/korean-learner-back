@@ -35,6 +35,10 @@ export class SentenceKoController {
     return parsed;
   }
 
+  private getShowName(sourceJson: SourceJsonDto): string {
+    return sourceJson.show
+  }
+
   @Post('/insert?')
   @UseFilters(TypeormFilter)
   insert(@Query('source') source: string) {
@@ -47,7 +51,11 @@ export class SentenceKoController {
       const json = require(path.join(dirPath, fileName));
       return this.parseJson2InsertDto(json);
     });
-    return this.sentenceKoService.insert(parsedJsons);
+    const showNames = jsonFiles.map(fileName => {
+      const json = require(path.join(dirPath, fileName));
+      return this.getShowName(json)
+    })
+    return this.sentenceKoService.insert(parsedJsons, showNames);
   }
 
   @Get('/search')

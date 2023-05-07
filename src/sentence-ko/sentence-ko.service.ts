@@ -5,27 +5,35 @@ import { SentenceKo } from './sentenceKo.entity';
 import { InsertSentenceKoDto } from './dto/insert-sentence-ko.dto';
 import { SearchSentenceKoDto } from './dto/search-sentence-ko.dto';
 import { SearchSentenceContextDto } from './dto/search-sentence-context.dto';
+import { ShowsService } from 'src/shows/shows.service';
 
 @Injectable()
 export class SentenceKoService {
   constructor(
     @InjectRepository(SentenceKo)
     private sentenceKoRepository: Repository<SentenceKo>,
+    private showsServie: ShowsService,
   ) {}
 
-  async insert(showData: InsertSentenceKoDto[][]): Promise<InsertResult> {
+  async insert(
+    showData: InsertSentenceKoDto[][],
+    showNames: string[],
+  ): Promise<InsertResult> {
     const sentencesKo: SentenceKo[] = [];
-    showData.forEach((episodeData, i) => {
-      episodeData.forEach((subtitles) => {
-        sentencesKo.push({
-          timeId: subtitles.timeId,
-          subtitles: subtitles.subtitles,
-          subtitlesZh: subtitles.subtitlesZh,
-          pos: subtitles.pos,
-          users: null,
+    await Promise.all(
+      showData.map(async (episodeData, i) => {
+        const show = await this.showsServie.getOne(showNames[i]);
+        episodeData.forEach((subtitles) => {
+          const sentenceKo = new SentenceKo();
+          sentenceKo.timeId = subtitles.timeId;
+          sentenceKo.subtitles = subtitles.subtitles;
+          sentenceKo.subtitlesZh = subtitles.subtitlesZh;
+          sentenceKo.pos = subtitles.pos;
+          sentenceKo.show = show;
+          sentencesKo.push(sentenceKo);
         });
-      });
-    });
+      }),
+    );
     Logger.verbose('Inserting setence in Korean...');
     const inserted = await this.sentenceKoRepository
       .createQueryBuilder()

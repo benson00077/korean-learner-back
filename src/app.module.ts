@@ -10,6 +10,8 @@ import { User } from './users/user.entitiy';
 import { SentenceKoModule } from './sentence-ko/sentence-ko.module';
 import { SentenceKo } from './sentence-ko/sentenceKo.entity';
 import { AuthModule } from './auth/auth.module';
+import { ShowsModule } from './shows/shows.module';
+import { Shows } from './shows/shows.entity';
 
 @Module({
   imports: [
@@ -46,7 +48,7 @@ import { AuthModule } from './auth/auth.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        entities: [User, SentenceKo],
+        entities: [User, SentenceKo, Shows],
         synchronize: configService.get('NODE_ENV') === 'development',
         logging: configService.get('NODE_ENV') === 'development',
       }),
@@ -55,6 +57,7 @@ import { AuthModule } from './auth/auth.module';
     ConfigModule,
     SentenceKoModule,
     AuthModule,
+    ShowsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

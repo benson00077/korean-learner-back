@@ -1,4 +1,5 @@
 import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
+import { Shows } from 'src/shows/shows.entity';
 import {
   Entity,
   Column,
@@ -30,4 +31,12 @@ export class User {
     name: 'users_sentences',
   })
   subtitles: SentenceKo[];
+
+  @ManyToMany(() => Shows, (show) => show.id, {
+    cascade: true,
+  })
+  @JoinTable({
+    name: 'users_shows'
+  })
+  shows: Shows[]; 
 }

@@ -1,5 +1,6 @@
+import { Shows } from 'src/shows/shows.entity';
 import { User } from 'src/users/user.entitiy';
-import { Column, Entity, Index, ManyToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity('sentenceKo')
 export class SentenceKo {
@@ -19,4 +20,14 @@ export class SentenceKo {
 
   @ManyToMany(() => User, (user) => user.subtitles)
   users: User[];
+
+  @ManyToOne(() => Shows, (show) => show.subtitles, {
+    cascade: ['insert', 'update']
+  })
+  // @JoinColumn({ name: 'showId'})
+  show: Shows;
+
+  // // ref: https://stackoverflow.com/a/61433772/16124226
+  // @Column()
+  // showId: number;
 }
