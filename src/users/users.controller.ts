@@ -16,6 +16,9 @@ import { AddFavorite } from './dto/add-favorite.dto';
 import { RemoveFavorite } from './dto/remove-favorite.dto';
 import { User } from './user.entitiy';
 import { UsersService } from './users.service';
+import { AddShows } from './dto/add-shows.dto';
+import { Shows } from 'src/shows/shows.entity';
+import { RemoveShows } from './dto/remove-shows.dto';
 
 @Controller('users')
 export class UsersController {
@@ -63,5 +66,31 @@ export class UsersController {
   getFavorite(@Param('id', ParseIntPipe) id: number): Promise<SentenceKo[]> {
     return this.usersService.getFavorite(id);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/shows')
+  @UseFilters(TypeormFilter)
+  async addShows(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() shows: AddShows,
+  ): Promise<User> {
+    const { showsNames } = shows;
+    return await this.usersService.addShows(id, showsNames);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id/shows')
+  @UseFilters(TypeormFilter)
+  async removeShows(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() shows: RemoveShows,
+  ): Promise<User> {
+    const { showsNames } = shows;
+    return await this.usersService.removeShows(id, showsNames);
+  };
+  
+  @Get(':id/shows')
+  getShows(@Param('id', ParseIntPipe) id:number): Promise<Shows[]> {
+    return this.usersService.getShows(id)
+  }
 }
-const a = { ids: '[2000057849]' };

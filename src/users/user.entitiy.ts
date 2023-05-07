@@ -32,7 +32,7 @@ export class User {
   })
   subtitles: SentenceKo[];
 
-  @ManyToMany(() => Shows, (show) => show.id, {
+  @ManyToMany(() => Shows, (show) => show.users, {
     cascade: true,
   })
   @JoinTable({

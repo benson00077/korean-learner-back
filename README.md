@@ -86,6 +86,7 @@ v0.2.0 Built w/ Nest.js
   - [ ] Cache login users
   - [x] Favorite sentences
     - [x] Use Cascades feature of TypeORM to save(update or delete table) columns in the many-to-many relations table, meaning you may want to inject sentence service.
+  - [x] Favorint shows
 - [ ] Sentence module
   - [x] Bulk insert from json file (via typeORM QueryBuilder)
   - [ ] Bulk insert only under Auth
@@ -93,8 +94,8 @@ v0.2.0 Built w/ Nest.js
   - [x] Support sentence's context search (by timeId)
 - [ ] Shows module
   - [ ] record for show name, episode
-  - [ ] Map to user table (many to many)
-  - [ ] Map to sentence table (one to many)
+  - [x] Map to user table (many to many)
+  - [x] Map to sentence table (one to many)
 - [ ] Search module
   - [ ] record for search histories and counts
 - [ ] Others

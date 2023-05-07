@@ -1,10 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SentenceKoService } from 'src/sentence-ko/sentence-ko.service';
 import { SentenceKo } from 'src/sentence-ko/sentenceKo.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../auth/dto/create-user.dto';
 import { User } from './user.entitiy';
+import { ShowsService } from 'src/shows/shows.service';
+import { Shows } from 'src/shows/shows.entity';
 
 @Injectable()
 export class UsersService {
@@ -12,6 +14,7 @@ export class UsersService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private sentenceKoService: SentenceKoService,
+    private showsService: ShowsService,
   ) {}
 
   create(createUserDto: CreateUserDto): Promise<User> {
@@ -73,5 +76,36 @@ export class UsersService {
       .where(`${tableName}.id = :id`, { id: id })
       .getOne();
     return favorite.subtitles;
+  }
+
+  async addShows(id: number, showsNames: string[]): Promise<User> {
+    const user = await this.findOne(id);
+    const shows = await this.showsService.getMany(showsNames);
+    user.shows = user.shows ? [...user.shows, ...shows] : shows;
+    const udpated = await this.userRepository.manager.save(user);
+    return udpated;
+  }
+
+  async removeShows(id: number, showsNames: string[]): Promise<User> {
+    const user = await this.findOne(id);
+    user.shows = await this.getShows(id);
+    user.shows = user.shows.filter((show) => {
+     return !showsNames.includes(show.name);
+    });
+    const updated = await this.userRepository.manager.save(user);
+    return updated;
+  }
+
+  async getShows(id: number): Promise<Shows[]> {
+    const tableName = this.userRepository.metadata.tableName;
+    const user = await this.userRepository
+      .createQueryBuilder(tableName)
+      .leftJoinAndSelect(`${tableName}.shows`, 'show')
+      .where(`${tableName}.id = :id`, { id })
+      .getOne();
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    return user.shows;
   }
 }
