@@ -23,7 +23,7 @@ import { Shows } from './shows/shows.entity';
         NODE_ENV: Joi.string()
           .valid('development', 'production', 'test')
           .default('development'),
-        PORT: Joi.number().default(3000),
+        PORT: Joi.number().default(3001),
         DB_HOST: Joi.string().required(),
         DB_PORT: Joi.number().required(),
         DB_USERNAME: Joi.string().required(),

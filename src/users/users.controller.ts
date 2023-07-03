@@ -20,6 +20,7 @@ import { AddShows } from './dto/add-shows.dto';
 import { Shows } from 'src/shows/shows.entity';
 import { RemoveShows } from './dto/remove-shows.dto';
 
+//FIXME: use jwt auth not id in url
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
