@@ -35,7 +35,7 @@ export class UsersService {
 
   findOne(id: number): Promise<User> {
     return this.userRepository.findOneBy({
-      id,
+      userId: id,
       isActive: '1',
     });
   }

@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/users/user.entitiy';
 import { UsersService } from 'src/users/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { jwtPayload } from './interface/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -23,8 +24,9 @@ export class AuthService {
     return null;
   }
 
-  login(user: Partial<User>) {
-    const payload = { username: user.username, sub: user.id };
+  async login(loginDto: Partial<User>) {
+    const user  = await this.userService.findOneByUsername(loginDto.username)
+    const payload: jwtPayload = { sub: user.userId, username: user.username };
     return {
       access_token: this.jwtService.sign(payload),
     };
