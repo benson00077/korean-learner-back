@@ -7,8 +7,9 @@ import { SearchSentenceContextDto } from './dto/search-sentence-context.dto';
 import * as fs from 'fs';
 import * as path from 'path';
 import { SourceJsonDto } from './dto/source-json.dto';
+import { SearchSentenceZhDto } from './dto/search-sentence-zh.dto';
 
-@Controller('sentence-ko')
+@Controller('sentences')
 export class SentenceKoController {
   constructor(private readonly sentenceKoService: SentenceKoService) {}
 
@@ -58,13 +59,19 @@ export class SentenceKoController {
     return this.sentenceKoService.insert(parsedJsons, showNames);
   }
 
-  @Get('/search')
+  @Get('/zh')
+  @UseFilters(TypeormFilter)
+  searchByChinese(@Body() datas: SearchSentenceZhDto){
+   return this.sentenceKoService.searchByChinese(datas); 
+  }
+
+  @Get('/ko')
   @UseFilters(TypeormFilter)
   searchByPosTag(@Body() datas: SearchSentenceKoDto) {
     return this.sentenceKoService.searchByPosTag(datas);
   }
 
-  @Get('/search/context')
+  @Get('/context')
   @UseFilters(TypeormFilter)
   searchSentenceContext(@Body() datas: SearchSentenceContextDto) {
     return this.sentenceKoService.searchSentenceContext(datas);

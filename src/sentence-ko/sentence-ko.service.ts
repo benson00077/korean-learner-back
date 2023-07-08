@@ -6,6 +6,7 @@ import { InsertSentenceKoDto } from './dto/insert-sentence-ko.dto';
 import { SearchSentenceKoDto } from './dto/search-sentence-ko.dto';
 import { SearchSentenceContextDto } from './dto/search-sentence-context.dto';
 import { ShowsService } from 'src/shows/shows.service';
+import { SearchSentenceZhDto } from './dto/search-sentence-zh.dto';
 
 @Injectable()
 export class SentenceKoService {
@@ -43,6 +44,20 @@ export class SentenceKoService {
       .orUpdate(['timeId', 'subtitles', 'subtitlesZh', 'pos'])
       .execute();
     return inserted.raw;
+  }
+
+  async searchByChinese(datas: SearchSentenceZhDto) {
+    const { pos } = datas;
+    const tableName = this.sentenceKoRepository.metadata.tableName;
+    /** SELECT * FROM sentenceKo WHERE MATCH(sentenceKo.subtitlesZh) AGAINST ('好吃'); */
+    const match = await this.sentenceKoRepository
+      .createQueryBuilder(tableName)
+      .select([`${tableName}.timeId`, `${tableName}.subtitlesZh`])
+      .where(`MATCH(${tableName}.subtitlesZh) AGAINST(:keyword)`, {
+        keyword: pos,
+      })
+      .getMany();
+    return match;
   }
 
   async searchByPosTag(datas: SearchSentenceKoDto) {

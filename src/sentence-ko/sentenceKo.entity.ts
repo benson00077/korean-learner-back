@@ -19,6 +19,7 @@ export class SentenceKo {
   @Column('simple-json')
   subtitles: string[];
 
+  @Index({ fulltext: true, parser: 'ngram' })
   @Column('simple-json')
   subtitlesZh: string[]
 
