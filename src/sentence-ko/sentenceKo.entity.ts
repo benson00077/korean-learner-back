@@ -4,6 +4,10 @@ import { Column, Entity, Index, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn
 
 @Entity('sentenceKo')
 export class SentenceKo {
+  /**
+   *  Notice that in db it might actully sotred as string, and js retrive it as stirng as well 
+   *  See the bigNumberStrings config on my TypeOrmModule.forRootAsync
+   */
   @PrimaryColumn({ type: 'bigint', unsigned: true })
   @Index({ unique: true })
   timeId: number;

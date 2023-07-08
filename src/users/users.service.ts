@@ -73,7 +73,7 @@ export class UsersService {
       .createQueryBuilder(tableName)
       .leftJoin(`${tableName}.subtitles`, `ko`)
       .addSelect([`ko.timeId`, `ko.subtitles`])
-      .where(`${tableName}.id = :id`, { id: id })
+      .where(`${tableName}.userId = :id`, { id: id })
       .getOne();
     return favorite.subtitles;
   }
@@ -101,7 +101,7 @@ export class UsersService {
     const user = await this.userRepository
       .createQueryBuilder(tableName)
       .leftJoinAndSelect(`${tableName}.shows`, 'show')
-      .where(`${tableName}.id = :id`, { id })
+      .where(`${tableName}.userId = :id`, { id: id })
       .getOne();
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);

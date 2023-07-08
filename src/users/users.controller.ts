@@ -3,9 +3,8 @@ import {
   Controller,
   Delete,
   Get,
-  Param,
-  ParseIntPipe,
   Post,
+  Request,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
@@ -19,79 +18,78 @@ import { UsersService } from './users.service';
 import { AddShows } from './dto/add-shows.dto';
 import { Shows } from 'src/shows/shows.entity';
 import { RemoveShows } from './dto/remove-shows.dto';
+import { passportUser } from 'src/auth/interface/passport.interface';
 
-//FIXME: use jwt auth not id in url
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
-    return this.usersService.findOne(id);
-  }
 
   @Get()
   findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
-  @Delete(':id')
-  removeOne(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    return this.usersService.removeOne(id);
+  @UseGuards(JwtAuthGuard)
+  @Delete()
+  removeOne(@Request() req): Promise<void> {
+    const passportUser: passportUser = req.user;
+    return this.usersService.removeOne(passportUser.userId);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post(':id/favorite')
+  @Post('/favorite')
   @UseFilters(TypeormFilter)
   async addFavorite(
-    @Param('id', ParseIntPipe) id: number,
+    @Request() req,
     @Body() sentences: AddFavorite,
   ): Promise<User> {
+    const passportUser: passportUser = req.user;
     const { ids } = sentences;
-    return await this.usersService.addFavorite(id, ids);
+    return await this.usersService.addFavorite(passportUser.userId, ids);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id/favorite')
+  @Delete('/favorite')
   @UseFilters(TypeormFilter)
   async removeFavorite(
-    @Param('id', ParseIntPipe) id: number,
+    @Request() req,
     @Body() sentences: RemoveFavorite,
   ): Promise<User> {
+    const passportUser: passportUser = req.user;
     const { ids } = sentences;
-    return await this.usersService.removeFavorite(id, ids);
-  }
-
-  @Get(':id/favorite')
-  @UseFilters(TypeormFilter)
-  getFavorite(@Param('id', ParseIntPipe) id: number): Promise<SentenceKo[]> {
-    return this.usersService.getFavorite(id);
+    return await this.usersService.removeFavorite(passportUser.userId, ids);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post(':id/shows')
+  @Get('/favorite')
   @UseFilters(TypeormFilter)
-  async addShows(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() shows: AddShows,
-  ): Promise<User> {
-    const { showsNames } = shows;
-    return await this.usersService.addShows(id, showsNames);
+  getFavorite(@Request() req): Promise<SentenceKo[]> {
+    const passportUser: passportUser = req.user;
+    return this.usersService.getFavorite(passportUser.userId);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id/shows')
+  @Post('/shows')
   @UseFilters(TypeormFilter)
-  async removeShows(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() shows: RemoveShows,
-  ): Promise<User> {
+  async addShows(@Request() req, @Body() shows: AddShows): Promise<User> {
+    const passportUser: passportUser = req.user;
     const { showsNames } = shows;
-    return await this.usersService.removeShows(id, showsNames);
-  };
-  
-  @Get(':id/shows')
-  getShows(@Param('id', ParseIntPipe) id:number): Promise<Shows[]> {
-    return this.usersService.getShows(id)
+    return await this.usersService.addShows(passportUser.userId, showsNames);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('/shows')
+  @UseFilters(TypeormFilter)
+  async removeShows(@Request() req, @Body() shows: RemoveShows): Promise<User> {
+    const passportUser: passportUser = req.user;
+    const { showsNames } = shows;
+    return await this.usersService.removeShows(passportUser.userId, showsNames);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/shows')
+  async getShows(@Request() req): Promise<Shows[]> {
+    const passportUser: passportUser = req.user;
+    return this.usersService.getShows(passportUser.userId);
   }
 }

@@ -43,6 +43,7 @@ import { Shows } from './shows/shows.entity';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
+        bigNumberStrings: false, //https://stackoverflow.com/a/67810048
         host: configService.get('DB_HOST'),
         port: +configService.get('DB_PORT'),
         username: configService.get('DB_USERNAME'),

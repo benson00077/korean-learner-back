@@ -34,6 +34,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('/profile')
   async getProfile(@Request() req): Promise<passportUser> {
-    return req.user;
+    const passportUser: passportUser = req.user
+    return passportUser;
   }
 }
