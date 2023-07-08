@@ -16,6 +16,14 @@ export class SentenceKoService {
     private showsServie: ShowsService,
   ) {}
 
+  private queryValidator(query: string) {
+    const good2Go = query.length > 1;
+    const errMsg = new SentenceKo();
+    errMsg.timeId = -1,
+    errMsg.subtitles = [`Please input a longer word. Your previouse query word is: ${query}`]
+    return { good2Go, errMsg: [errMsg] };
+  }
+
   async insert(
     showData: InsertSentenceKoDto[][],
     showNames: string[],
@@ -78,7 +86,9 @@ export class SentenceKoService {
     return match;
   }
 
-  async searchByPosTag(datas: SearchSentenceKoDto) {
+  async searchByPosTag(
+    datas: SearchSentenceKoDto,
+  ): Promise<SentenceKo[]> {
     const { pos, tag } = datas;
     const tableName = this.sentenceKoRepository.metadata.tableName;
     const selectCols = [
@@ -86,7 +96,10 @@ export class SentenceKoService {
       `${tableName}.subtitles`,
       `${tableName}.subtitlesZh`,
     ];
-    let match = null;
+    const { good2Go, errMsg } = this.queryValidator(pos);
+    if (!good2Go) return errMsg;
+    
+    let match: SentenceKo[];
     switch (tag) {
       case 'VV':
       case 'VA':
