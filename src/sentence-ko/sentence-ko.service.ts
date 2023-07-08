@@ -48,29 +48,68 @@ export class SentenceKoService {
 
   async searchByChinese(datas: SearchSentenceZhDto) {
     const { pos } = datas;
+    const supportFullTextSearch = pos.length > 1;
     const tableName = this.sentenceKoRepository.metadata.tableName;
-    /** SELECT * FROM sentenceKo WHERE MATCH(sentenceKo.subtitlesZh) AGAINST ('好吃'); */
-    const match = await this.sentenceKoRepository
-      .createQueryBuilder(tableName)
-      .select([`${tableName}.timeId`, `${tableName}.subtitlesZh`])
-      .where(`MATCH(${tableName}.subtitlesZh) AGAINST(:keyword)`, {
-        keyword: pos,
-      })
-      .getMany();
+    const selectCols = [
+      `${tableName}.timeId`,
+      `${tableName}.subtitles`,
+      `${tableName}.subtitlesZh`,
+    ];
+    let match = null;
+    switch (supportFullTextSearch) {
+      case false:
+        match = await this.sentenceKoRepository
+          .createQueryBuilder(tableName)
+          .select(selectCols)
+          .where(`${tableName}.subtitlesZh like :pos`, { pos: `%${pos}%` })
+          .getMany();
+        break;
+      case true:
+      default:
+        /** SELECT * FROM sentenceKo WHERE MATCH(sentenceKo.subtitlesZh) AGAINST ('好吃'); */
+        match = await this.sentenceKoRepository
+          .createQueryBuilder(tableName)
+          .select(selectCols)
+          .where(`MATCH(${tableName}.subtitlesZh) AGAINST(:keyword)`, {
+            keyword: pos,
+          })
+          .getMany();
+    }
     return match;
   }
 
   async searchByPosTag(datas: SearchSentenceKoDto) {
     const { pos, tag } = datas;
     const tableName = this.sentenceKoRepository.metadata.tableName;
-    const match = await this.sentenceKoRepository
-      // .createQueryBuilder()
-      // .select() // select *
-      .createQueryBuilder(tableName)
-      .select([`${tableName}.timeId`, `${tableName}.subtitles`])
-      .where(`MATCH(subtitles) AGAINST ('${pos}' IN BOOLEAN MODE)`)
-      .andWhere(`${tableName}.pos like :tag`, { tag: `%${tag}%` })
-      .getMany();
+    const selectCols = [
+      `${tableName}.timeId`,
+      `${tableName}.subtitles`,
+      `${tableName}.subtitlesZh`,
+    ];
+    let match = null;
+    switch (tag) {
+      case 'VV':
+      case 'VA':
+        const posTrimmed = pos.slice(0, -1); // 먹다 > 먹
+        match = await this.sentenceKoRepository
+          .createQueryBuilder(tableName)
+          .select(selectCols)
+          .where(`${tableName}.pos like :pos`, {
+            pos: `%${posTrimmed}\/${tag}%`,
+          })
+          .getMany();
+        break;
+      case 'NNG':
+      default:
+        match = await this.sentenceKoRepository
+          // .createQueryBuilder()
+          // .select() // select *
+          .createQueryBuilder(tableName)
+          .select(selectCols)
+          .where(`MATCH(subtitles) AGAINST ('${pos}' IN BOOLEAN MODE)`)
+          .andWhere(`${tableName}.pos like :tag`, { tag: `%${tag}%` })
+          .getMany();
+    }
     return match;
   }
 
