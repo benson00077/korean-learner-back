@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post, Query, UseFilters } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  ParseIntPipe,
+  Post,
+  Query,
+  UseFilters,
+} from '@nestjs/common';
 import { InsertSentenceKoDto } from './dto/insert-sentence-ko.dto';
 import { SentenceKoService } from './sentence-ko.service';
 import { TypeormFilter } from 'src/common/exceptions/typeorm/typeorm.filter';
@@ -37,7 +44,7 @@ export class SentenceKoController {
   }
 
   private getShowName(sourceJson: SourceJsonDto): string {
-    return sourceJson.show
+    return sourceJson.show;
   }
 
   @Post('/insert?')
@@ -52,29 +59,33 @@ export class SentenceKoController {
       const json = require(path.join(dirPath, fileName));
       return this.parseJson2InsertDto(json);
     });
-    const showNames = jsonFiles.map(fileName => {
+    const showNames = jsonFiles.map((fileName) => {
       const json = require(path.join(dirPath, fileName));
-      return this.getShowName(json)
-    })
+      return this.getShowName(json);
+    });
     return this.sentenceKoService.insert(parsedJsons, showNames);
   }
 
   @Get('/zh')
   @UseFilters(TypeormFilter)
-  searchByChinese(@Body() datas: SearchSentenceZhDto){
-   return this.sentenceKoService.searchByChinese(datas); 
+  searchByChinese(@Query() params: SearchSentenceZhDto) {
+    return this.sentenceKoService.searchByChinese(params);
   }
 
   @Get('/ko')
   @UseFilters(TypeormFilter)
-  searchByPosTag(@Body() datas: SearchSentenceKoDto) {
-    return this.sentenceKoService.searchByPosTag(datas);
+  searchByPosTag(@Query() params: SearchSentenceKoDto) {
+    return this.sentenceKoService.searchByPosTag(params);
   }
 
   @Get('/context')
   @UseFilters(TypeormFilter)
-  searchSentenceContext(@Body() datas: SearchSentenceContextDto) {
-    return this.sentenceKoService.searchSentenceContext(datas);
+  searchSentenceContext(
+    @Query('timeId', ParseIntPipe) timeId: number,
+    @Query('timeRange', ParseIntPipe) timeRange: number,
+  ) {
+    const params: SearchSentenceContextDto = { timeId, timeRange };
+    return this.sentenceKoService.searchSentenceContext(params);
   }
 
   @Get()
