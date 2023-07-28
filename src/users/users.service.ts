@@ -49,22 +49,23 @@ export class UsersService {
     }
   }
 
-  async removeFavorite(id: number, sentencesIds: number[]): Promise<User> {
+  async removeFavorite(id: number, sentencesIds: number[]): Promise<SentenceKo[]> {
     const user = await this.findOne(id);
     user.subtitles = await this.getFavorite(id);
     user.subtitles = user.subtitles.filter((subtitle) => {
       return !sentencesIds.includes(subtitle.timeId);
     });
     const updated = await this.userRepository.manager.save(user);
-    return updated;
+    return updated.subtitles;
   }
 
-  async addFavorite(id: number, sentencesIds: number[]): Promise<User> {
+  async addFavorite(id: number, sentencesIds: number[]): Promise<SentenceKo[]> {
     const user = await this.findOne(id);
     const sentences = await this.sentenceKoService.searchByIds(sentencesIds);
-    user.subtitles = sentences;
+    const existingSentences = await this.getFavorite(id);
+    user.subtitles = [...existingSentences, ...sentences];
     const updated = await this.userRepository.manager.save(user);
-    return updated;
+    return updated.subtitles;
   }
 
   async getFavorite(id: number): Promise<SentenceKo[]> {
@@ -72,7 +73,7 @@ export class UsersService {
     const favorite = await this.userRepository
       .createQueryBuilder(tableName)
       .leftJoin(`${tableName}.subtitles`, `ko`)
-      .addSelect([`ko.timeId`, `ko.subtitles`])
+      .addSelect([`ko.timeId`, `ko.subtitles`, `ko.subtitlesZh`])
       .where(`${tableName}.userId = :id`, { id: id })
       .getOne();
     return favorite.subtitles;

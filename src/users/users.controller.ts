@@ -42,7 +42,7 @@ export class UsersController {
   async addFavorite(
     @Request() req,
     @Body() sentences: AddFavorite,
-  ): Promise<User> {
+  ): Promise<SentenceKo[]> {
     const passportUser: passportUser = req.user;
     const { ids } = sentences;
     return await this.usersService.addFavorite(passportUser.userId, ids);
@@ -54,7 +54,7 @@ export class UsersController {
   async removeFavorite(
     @Request() req,
     @Body() sentences: RemoveFavorite,
-  ): Promise<User> {
+  ): Promise<SentenceKo[]> {
     const passportUser: passportUser = req.user;
     const { ids } = sentences;
     return await this.usersService.removeFavorite(passportUser.userId, ids);
