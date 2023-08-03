@@ -2,6 +2,9 @@
 src/assets/seeds/*
 !src/assets/seeds/README.md
 
+# MySQL dump file
+dump_file.sql
+
 # Dotenv environment variables file
 .env.production
 .env.development

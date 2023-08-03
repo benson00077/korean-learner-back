@@ -138,14 +138,15 @@ export class SentenceKoService {
     datas: SearchSentenceContextDto,
   ): Promise<SentenceKo[]> {
     const { timeId, timeRange } = datas;
-    const timeRangeMs = timeRange * 1000;
+    const timeRangeMs = timeRange * 1000000000; // timeid from 1000200:00:11.000 -> 10002000011000
+    const [upperBound, lowerBound] = [timeId + timeRangeMs, timeId - timeRangeMs]
     const tableName = this.sentenceKoRepository.metadata.tableName;
     const match = await this.sentenceKoRepository
       .createQueryBuilder(tableName)
-      .select([`${tableName}.timeId`, `${tableName}.subtitles`])
+      .select([`${tableName}.timeId`, `${tableName}.subtitles`, `${tableName}.subtitlesZh`])
       .where(
-        `${tableName}.timeId < ${timeId + timeRangeMs} 
-        OR ${tableName}.timeId > ${timeId - timeRangeMs}`,
+        `${tableName}.timeId < ${upperBound} 
+        AND ${tableName}.timeId > ${lowerBound}`,
       )
       .getMany();
     return match;
